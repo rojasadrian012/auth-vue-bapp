@@ -3,25 +3,30 @@
     <nav class="h-full flex justify-between container items-center">
       <div>
         <router-link to="/" class="text-ct-dark-600 font-semibold"
-          >CodevoWeb</router-link
+          >Burnout Test CBI</router-link
         >
       </div>
       <ul class="flex items-center gap-4">
-        <li><router-link to="/" class="text-ct-dark-600">Home</router-link></li>
+        <li><router-link to="/" class="text-ct-dark-600">Inicio</router-link></li>
         <li v-if="!user">
           <router-link to="/register" class="text-ct-dark-600"
-            >SignUp</router-link
+            >Registrase</router-link
           >
         </li>
         <li v-if="!user">
-          <router-link to="/login" class="text-ct-dark-600">Login</router-link>
+          <router-link to="/login" class="text-ct-dark-600">Iniciar Sesión</router-link>
         </li>
         <li v-if="user">
           <router-link to="/profile" class="text-ct-dark-600"
-            >Profile</router-link
+            >Mi perfil</router-link
           >
         </li>
-        <li v-if="user" class="cursor-pointer" @click="handleLogout">Logout</li>
+        <li v-if="user">
+          <router-link to="/cbi-test" class="text-ct-dark-600"
+            >Test CBI</router-link
+          >
+        </li>
+        <li v-if="user" class="cursor-pointer" @click="handleLogout">Cerrar Sesión</li>
       </ul>
     </nav>
   </header>

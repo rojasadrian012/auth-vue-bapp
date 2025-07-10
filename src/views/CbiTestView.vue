@@ -1,5 +1,6 @@
 <template>
-  <section class="bg-ct-blue-600 min-h-screen">
+  <Header />
+  <section class="bg-ct-blue-600 min-h-screen pt-20">
     <div class="max-w-4xl mx-auto bg-ct-dark-100 rounded-md p-8">
 
       <!-- Loading -->
@@ -36,6 +37,7 @@
 </template>
 
 <script setup lang="ts">
+import Header from '@/components/Header.vue'
 import { ref, onMounted } from 'vue'
 import { getCbiQuesions, type Question } from '@/api/data'
 

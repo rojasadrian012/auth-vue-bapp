@@ -12,6 +12,7 @@ import { useAuthStore } from '@/stores/authStore';
 import requireAuth from '@/router/middleware/requireAuth';
 import middlewarePipeline from '@/router/middlewarePipeline';
 import ProfileViewVue from '@/views/ProfileView.vue';
+import CbiTestView from '@/views/CbiTestView.vue';
 
 const routes = [
   {
@@ -45,6 +46,14 @@ const routes = [
     name: 'profile',
     path: '/profile',
     component: ProfileViewVue,
+    meta: {
+      middleware: [requireAuth],
+    },
+  },
+  {
+    name: 'cbi-test',
+    path: '/cbi-test',
+    component: CbiTestView,
     meta: {
       middleware: [requireAuth],
     },

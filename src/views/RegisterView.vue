@@ -4,10 +4,10 @@
       <h1
         class="text-4xl xl:text-6xl text-center font-[600] text-ct-yellow-600 mb-4"
       >
-        Welcome to CodevoWeb!
+        Bienvenido a Burnout Test CBI
       </h1>
       <h2 class="text-lg text-center mb-4 text-ct-dark-200">
-        Sign Up To Get Started!
+        Crea una cuenta para comenzar
       </h2>
       <form
         @submit="onSubmit"
@@ -15,7 +15,7 @@
       >
         <div class="">
           <label for="name" class="block text-ct-blue-600 mb-3"
-            >Full Name</label
+            >Nombre Completp</label
           >
           <input
             v-model="name"
@@ -28,7 +28,7 @@
         </div>
         <div class="">
           <label for="email" class="block text-ct-blue-600 mb-3"
-            >Email Address</label
+            >Correo</label
           >
           <input
             v-model="email"
@@ -43,7 +43,7 @@
         </div>
         <div class="">
           <label for="password" class="block text-ct-blue-600 mb-3"
-            >Password</label
+            >Contraseña</label
           >
           <input
             v-model="password"
@@ -58,7 +58,7 @@
         </div>
         <div class="">
           <label for="passwordConfirm" class="block text-ct-blue-600 mb-3"
-            >Confirm Password</label
+            >Repita su sontraseña</label
           >
           <input
             v-model="passwordConfirm"
@@ -72,12 +72,12 @@
           }}</span>
         </div>
         <span class="block"
-          >Already have an account?
+          >Ya tienes una cuenta?
           <router-link :to="{ name: 'login' }" class="text-ct-blue-600"
-            >Login Here</router-link
+            >Entra aqui</router-link
           ></span
         >
-        <LoadingButton :loading="isLoading">Sign Up</LoadingButton>
+        <LoadingButton :loading="isLoading">Registrarse</LoadingButton>
       </form>
     </div>
   </section>

@@ -4,10 +4,10 @@
       <h1
         class="text-4xl xl:text-6xl text-center font-[600] text-ct-yellow-600 mb-4"
       >
-        Welcome Back
+        Bienvenido de nuevo
       </h1>
       <h2 class="text-lg text-center mb-4 text-ct-dark-200">
-        Login to have access
+        Inicia sesión para continuar
       </h2>
       <form
         @submit="onSubmit"
@@ -15,7 +15,7 @@
       >
         <div class="">
           <label for="email" class="block text-ct-blue-600 mb-3"
-            >Email Address</label
+            >Correo</label
           >
           <input
             type="email"
@@ -30,7 +30,7 @@
         </div>
         <div class="">
           <label for="password" class="block text-ct-blue-600 mb-3"
-            >Password</label
+            >Contraseña</label
           >
           <input
             v-model="password"
@@ -44,13 +44,13 @@
           }}</span>
         </div>
         <div class="text-right">
-          <a href="" class="">Forgot Password?</a>
+          <a href="" class="">Olvidaste tú contraseña?</a>
         </div>
-        <LoadingButton :loading="isLoading">Login</LoadingButton>
+        <LoadingButton :loading="isLoading">Entrar</LoadingButton>
         <span class="block"
-          >Need an account?
+          >Necesitas una cuenta?
           <router-link :to="{ name: 'register' }" class="text-ct-blue-600"
-            >Sign Up Here</router-link
+            >Resgistrate aqui</router-link
           ></span
         >
       </form>

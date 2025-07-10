@@ -1,11 +1,15 @@
 <template>
   <Header />
-  <section class="bg-ct-blue-600 min-h-screen pt-20">
-   <CbiTest />
+   <section class="bg-ct-blue-600 min-h-screen pt-20">
+    <div
+      class="max-w-4xl mx-auto bg-ct-dark-200 rounded-md h-[20rem] flex justify-center items-center flex-col"
+    >
+      <p class="text-5xl font-semibold">Bienvenido a Burnout Test CBI</p>
+      <p class="my-5">Create una cuenta para hacer el test.</p>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import Header from '@/components/Header.vue';
-import CbiTest from '@/components/CbiTest.vue';
 </script>
