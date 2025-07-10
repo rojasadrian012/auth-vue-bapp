@@ -5,9 +5,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "target": "ES2017",  // o "ES2018", "ES2019", "ES2020"
+    "lib": ["ES2017", "DOM"],  // Añade ES2017 o superior
+    "verbatimModuleSyntax": true  // Se sugiere usar esta opción para el soporte adecuado de módulos
   },
-
   "references": [
     {
       "path": "./tsconfig.config.json"
