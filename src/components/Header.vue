@@ -2,29 +2,21 @@
   <header class="bg-white h-20">
     <nav class="h-full flex justify-between container items-center">
       <div>
-        <router-link to="/" class="text-ct-dark-600 font-semibold"
-          >Burnout Test CBI</router-link
-        >
+        <router-link to="/" class="text-ct-dark-600 font-semibold">Burnout Test CBI</router-link>
       </div>
       <ul class="flex items-center gap-4">
         <li><router-link to="/" class="text-ct-dark-600">Inicio</router-link></li>
         <li v-if="!user">
-          <router-link to="/register" class="text-ct-dark-600"
-            >Registrase</router-link
-          >
+          <router-link to="/register" class="text-ct-dark-600">Registrase</router-link>
         </li>
         <li v-if="!user">
           <router-link to="/login" class="text-ct-dark-600">Iniciar Sesión</router-link>
         </li>
         <li v-if="user">
-          <router-link to="/profile" class="text-ct-dark-600"
-            >Mi perfil</router-link
-          >
+          <router-link to="/cbi-test" class="text-ct-dark-600">Iniciar Test</router-link>
         </li>
         <li v-if="user">
-          <router-link to="/cbi-test" class="text-ct-dark-600"
-            >Test CBI</router-link
-          >
+          <router-link to="/profile" class="text-ct-dark-600">Mi perfil</router-link>
         </li>
         <li v-if="user" class="cursor-pointer" @click="handleLogout">Cerrar Sesión</li>
       </ul>

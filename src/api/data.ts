@@ -296,8 +296,7 @@ const cbiTestData: CbiTestData = {
 };
 
 
-export const getCbiQuesions = async (): Promise<Question[]> => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
+export const getCbiQuesions = (): Question[] => {
     return cbiTestData.questions;
 }
 

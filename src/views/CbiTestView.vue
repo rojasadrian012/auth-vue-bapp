@@ -8,28 +8,64 @@
         <p class="text-white text-xl">Cargando preguntas...</p>
       </div>
 
+      <!-- Error -->
+      <div v-else-if="error" class="text-center">
+        <p class="text-red-500 text-xl">{{ error }}</p>
+        <button @click="retryLoad" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
+          Reintentar
+        </button>
+      </div>
+
       <!-- Test -->
       <div v-else>
         <h1 class="text-5xl font-semibold text-center mb-8">CBI Test</h1>
 
-        <div v-for="question in questions" :key="question.id" class="mb-8 bg-white p-6 rounded-lg">
+        <!-- Progress indicator -->
+        <div class="mb-6">
+          <div class="flex justify-between text-sm text-gray-600 mb-2">
+            <span>Pregunta {{ currentQuestionIndex + 1 }} de {{ questions.length }}</span>
+            <span>{{ Math.round(((currentQuestionIndex + 1) / questions.length) * 100) }}%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-500 h-2 rounded-full transition-all duration-300"
+              :style="{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }"></div>
+          </div>
+        </div>
 
+        <!-- Single question display -->
+        <div v-if="currentQuestion" class="mb-8 bg-white p-6 rounded-lg">
           <h3 class="text-lg font-medium mb-4">
-            {{ question.id }}. {{ question.question }}
+            {{ currentQuestion.id }}. {{ currentQuestion.question }}
           </h3>
 
           <div class="space-y-2">
-            <label v-for="option in question.options" :key="option.value"
-              class="flex items-center space-x-3 cursor-pointer">
-              <input type="radio" :value="option.value" v-model="answers[question.id]" class="w-4 h-4">
+            <label v-for="option in currentQuestion.options" :key="option.value"
+              class="flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded">
+              <input type="radio" :value="option.value" v-model="answers[currentQuestion.id]" class="w-4 h-4"
+                @change="handleAnswerChange">
               <span>{{ option.label }}</span>
             </label>
           </div>
         </div>
 
-        <button @click="submitTest" class="w-full bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
-          Enviar Test
-        </button>
+        <!-- Navigation buttons -->
+        <div class="flex justify-between items-center">
+          <button @click="goToPreviousQuestion" :disabled="currentQuestionIndex === 0"
+            class="py-2 px-4 rounded-lg transition-colors duration-200" :class="currentQuestionIndex === 0
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-gray-500 text-white hover:bg-gray-600'">
+            ← Anterior
+          </button>
+
+          <!-- Show submit button only on last question -->
+          <button v-if="isLastQuestion" @click="submitTest" :disabled="!isCurrentAnswered || submitting"
+            class="py-3 px-6 rounded-lg transition-colors duration-200" :class="isCurrentAnswered && !submitting
+              ? 'bg-blue-500 text-white hover:bg-blue-600'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'">
+            {{ submitting ? 'Enviando...' : 'Enviar Test' }}
+          </button>
+        </div>
+
       </div>
 
     </div>
@@ -38,36 +74,138 @@
 
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { getCbiQuesions, type Question } from '@/api/data'
+import { submitCbiTest } from '@/api/questionApi'
 
-// State
+// Types
+interface TestSubmission {
+  answers: Record<number, number>
+  completedAt: string
+  totalQuestions: number
+}
+
+interface TestResult {
+  personalBurnout: number
+  workBurnout: number
+  clientBurnout: number
+  overallScore: number
+  interpretation: string
+}
+
+// Reactive state
 const questions = ref<Question[]>([])
 const loading = ref(true)
-const answers = ref<Record<number, number>>({}) // 👈 Tipado más específico
+const error = ref<string | null>(null)
+const submitting = ref(false)
+const answers = ref<Record<number, number>>({})
+const currentQuestionIndex = ref(0)
 
-// Cargar datos cuando el componente se monta
-onMounted(async () => {
+// Computed properties
+const answeredCount = computed(() => Object.keys(answers.value).length)
+const isTestComplete = computed(() =>
+  questions.value.length > 0 && answeredCount.value === questions.value.length
+)
+const currentQuestion = computed(() =>
+  questions.value[currentQuestionIndex.value] || null
+)
+const isLastQuestion = computed(() =>
+  currentQuestionIndex.value === questions.value.length - 1
+)
+const isCurrentAnswered = computed(() =>
+  currentQuestion.value ? currentQuestion.value.id in answers.value : false
+)
+
+// Methods
+const loadQuestions = async () => {
   try {
+    loading.value = true
+    error.value = null
     questions.value = await getCbiQuesions()
-  } catch (error) {
-    console.error('Error cargando preguntas:', error)
+  } catch (err) {
+    error.value = 'Error al cargar las preguntas. Por favor, intenta de nuevo.'
+    console.error('Error loading questions:', err)
   } finally {
     loading.value = false
   }
-})
-
-// Función para enviar el test
-const submitTest = () => {
-  console.log('Respuestas:', answers.value)
-
-  // Ejemplo de lo que verías en la consola:
-  // { 1: 50, 2: 75, 3: 25, 4: 100, ... }
-
-  // Calcular puntuación total
-  const total = Object.values(answers.value).reduce((sum, value) => sum + value, 0)
-  const average = total / Object.keys(answers.value).length
-
-  console.log('Puntuación promedio:', average)
 }
+
+const retryLoad = () => {
+  loadQuestions()
+}
+
+const updateProgress = () => {
+  // This could trigger auto-save functionality if needed
+  console.log(`Progreso: ${answeredCount.value}/${questions.value.length}`)
+}
+
+const handleAnswerChange = () => {
+  updateProgress()
+
+  // Auto-advance to next question after a short delay
+  setTimeout(() => {
+    if (!isLastQuestion.value) {
+      goToNextQuestion()
+    }
+  }, 300) // Small delay for better UX
+}
+
+const goToNextQuestion = () => {
+  if (currentQuestionIndex.value < questions.value.length - 1) {
+    currentQuestionIndex.value++
+  }
+}
+
+const goToPreviousQuestion = () => {
+  if (currentQuestionIndex.value > 0) {
+    currentQuestionIndex.value--
+  }
+}
+
+const validateAnswers = (): boolean => {
+  const missingAnswers = questions.value.filter(q => !(q.id in answers.value))
+
+  if (missingAnswers.length > 0) {
+    const missingIds = missingAnswers.map(q => q.id).join(', ')
+    console.warn(`Faltan respuestas para las preguntas: ${missingIds}`)
+    return false
+  }
+
+  return true
+}
+
+const submitTest = async () => {
+  if (!validateAnswers()) {
+    return
+  }
+
+  try {
+    submitting.value = true
+
+    const submission: TestSubmission = {
+      answers: { ...answers.value },
+      completedAt: new Date().toISOString(),
+      totalQuestions: questions.value.length
+    }
+
+    const result: TestResult = await submitCbiTest(submission)
+
+    // Handle successful submission
+    console.log('Test enviado exitosamente:', result)
+
+    // You could navigate to results page or show results modal
+    // router.push({ name: 'TestResults', params: { result } })
+
+  } catch (err) {
+    console.error('Error al enviar el test:', err)
+    error.value = 'Error al enviar el test. Por favor, intenta de nuevo.'
+  } finally {
+    submitting.value = false
+  }
+}
+
+// Lifecycle
+onMounted(() => {
+  loadQuestions()
+})
 </script>

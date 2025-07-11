@@ -5,12 +5,11 @@
       class="max-w-4xl mx-auto bg-ct-dark-100 rounded-md h-[20rem] flex justify-center items-center"
     >
       <div>
-        <p class="text-5xl font-semibold">Profile Page</p>
+        <p class="text-5xl font-semibold">Perfil de usuario</p>
         <div class="mt-8">
-          <p class="mb-4">ID: {{ user?.id }}</p>
-          <p class="mb-4">Name: {{ user?.name }}</p>
-          <p class="mb-4">Email: {{ user?.email }}</p>
-          <p class="mb-4">Role: {{ user?.role }}</p>
+          <p class="mb-4">Identificador: {{ user?.id }}</p>
+          <p class="mb-4">Nombre: {{ user?.name }}</p>
+          <p class="mb-4">Correo: {{ user?.email }}</p>
         </div>
       </div>
     </div>

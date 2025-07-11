@@ -121,10 +121,10 @@ const { isLoading, mutate } = useMutation(
     },
     onSuccess: (data) => {
       queryClient.refetchQueries('authUser');
-      createToast('Successfully logged in', {
+      createToast('Inicio de sesión exitoso', {
         position: 'top-right',
       });
-      router.push({ name: 'profile' });
+      router.push({ name: 'cbi-test' });
     },
   }
 );
