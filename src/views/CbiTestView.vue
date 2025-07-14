@@ -73,10 +73,10 @@
 </template>
 
 <script setup lang="ts">
-import Header from '@/components/Header.vue'
 import { ref, computed, onMounted } from 'vue'
-import { getCbiQuesions, type Question } from '@/api/data'
-import { submitCbiTest } from '@/api/questionApi'
+import Header from '@/components/Header.vue'
+import { getCbiQuestionsFn, submitCbiTest } from '@/api/question/questionApi'
+import type { ICbiQuestionResult } from '@/api/question/question.types'
 
 // Types
 interface TestSubmission {
@@ -94,7 +94,7 @@ interface TestResult {
 }
 
 // Reactive state
-const questions = ref<Question[]>([])
+const questions = ref<ICbiQuestionResult['data']>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
 const submitting = ref(false)
@@ -121,7 +121,10 @@ const loadQuestions = async () => {
   try {
     loading.value = true
     error.value = null
-    questions.value = await getCbiQuesions()
+    const response: ICbiQuestionResult = await getCbiQuestionsFn()
+    questions.value = response.data
+    console.log(questions.value);
+    
   } catch (err) {
     error.value = 'Error al cargar las preguntas. Por favor, intenta de nuevo.'
     console.error('Error loading questions:', err)
