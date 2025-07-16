@@ -3,8 +3,8 @@ import { ref, onMounted } from 'vue'
 import Header from '@/components/Header.vue'
 import { getCbiQuestionsFn } from '@/api/question/questionApi'
 import type { ICbiQuestionResult } from '@/api/question/question.types'
-import CbiTest from '@/components/CbiTest.vue'
-import type { Question } from '@/components/CbiTest.utils'
+import CbiTest from '@/components/CbiForm.vue'
+import type { Question } from '@/components/CbiForm.utils'
 
 const questions = ref<Question[]>([])
 const loading = ref(true)

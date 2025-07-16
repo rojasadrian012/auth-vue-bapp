@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { submitCbiTest, type ITestResultApi, type ITestSubmissionApi } from '@/api/question/questionApi';
 import { computed, ref } from 'vue';
-import type { Question } from './CbiTest.utils';
+import type { Question } from './CbiForm.utils';
 
 interface Props {
     questions: Question[];
