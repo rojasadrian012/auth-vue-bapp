@@ -1,15 +1,4 @@
-
-export interface ICbiQuestionResult {
-    status: string;
-    count: number;
-    data: Data;
-}
-
-interface Data {
-    questions: Question[];
-}
-
-interface Question {
+export interface Question {
     id: string;
     created_at: Date;
     updated_at: Date;
@@ -25,3 +14,4 @@ interface Option {
     label: string;
     labelEn: string;
 }
+

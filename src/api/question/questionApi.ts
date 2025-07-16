@@ -1,13 +1,13 @@
 import { api } from "../apiBase"
 import type { ICbiQuestionResult } from "./question.types"
 
-export interface TestSubmission {
+export interface ITestSubmissionApi {
   answers: Record<number, number>
   completedAt: string
   totalQuestions: number
 }
 
-export interface TestResult {
+export interface ITestResultApi {
   personalBurnout: number
   workBurnout: number
   clientBurnout: number
@@ -22,12 +22,12 @@ export const getCbiQuestionsFn = async (): Promise<ICbiQuestionResult> => {
 }
 
 
-export const submitCbiTest = async (submission: TestSubmission): Promise<TestResult> => {
+export const submitCbiTest = async (submission: ITestSubmissionApi): Promise<ITestResultApi> => {
   console.log('Submitting CBI test:', submission);
 
-  return new Promise<TestResult>((resolve, reject) => {
+  return new Promise<ITestResultApi>((resolve, reject) => {
     setTimeout(() => {
-      const mockResult: TestResult = {
+      const mockResult: ITestResultApi = {
         personalBurnout: 3,
         workBurnout: 4,
         clientBurnout: 2,
