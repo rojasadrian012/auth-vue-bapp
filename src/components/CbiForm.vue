@@ -10,7 +10,8 @@ interface Props {
 const { questions } = defineProps<Props>();
 
 const title = ref<string>("")
-const answers = ref<Record<number, number>>({})
+// Cambiar a Record<string, string> para usar UUIDs
+const answers = ref<Record<string, string>>({})
 const currentQuestionIndex = ref(0)
 const submitting = ref(false)
 const error = ref<string | null>(null)
@@ -28,7 +29,6 @@ const isLastQuestion = computed(() =>
 const isCurrentAnswered = computed(() =>
     currentQuestion.value ? currentQuestion.value.id in answers.value : false
 )
-
 
 const goToNextQuestion = () => {
     if (currentQuestionIndex.value < questions.length - 1) {
@@ -52,7 +52,13 @@ const handleAnswerChange = () => {
 }
 
 const updateProgress = () => {
-    console.log(answeredCount.value, questions.length, answers.value, isLastQuestion.value);
+    if (isLastQuestion.value)
+        console.log({
+            answers: answers.value,
+            answeredCount: answeredCount.value,
+            totalQuestions: questions.length,
+            isLastQuestion: isLastQuestion.value,
+        });
 
     console.log(`Progreso: ${answeredCount.value}/${questions.length}`)
 }
@@ -101,9 +107,7 @@ const submitTest = async () => {
 
 </script>
 
-
 <template>
-
     <h1 class="text-5xl font-semibold text-center mb-8">{{ title }}</h1>
 
     <div class="mb-6">
@@ -125,7 +129,8 @@ const submitTest = async () => {
         <div class="space-y-2">
             <label v-for="option in currentQuestion.options" :key="option.id"
                 class="flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded">
-                <input type="radio" :value="option.id" v-model="answers[+currentQuestion.id]" class="w-4 h-4"
+                <!-- Removido el operador + -->
+                <input type="radio" :value="option.id" v-model="answers[currentQuestion.id]" class="w-4 h-4"
                     @change="handleAnswerChange">
                 <span>{{ option.label }}</span>
             </label>

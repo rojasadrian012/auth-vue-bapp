@@ -2,7 +2,7 @@ import { api } from "../apiBase"
 import type { ICbiQuestionResult } from "./question.types"
 
 export interface ITestSubmissionApi {
-  answers: Record<number, number>
+  answers: Record<string, string>
   completedAt: string
   totalQuestions: number
 }
