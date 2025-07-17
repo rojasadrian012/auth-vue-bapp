@@ -1,11 +1,5 @@
 import { api } from "../apiBase"
-import type { ICbiQuestionResult } from "./question.types"
-
-export interface ITestSubmissionApi {
-  answers: Record<string, string>
-  completedAt: string
-  totalQuestions: number
-}
+import type { ICbiQuestionResult, ITestSubmissionApi } from "./question.types"
 
 export interface ITestResultApi {
   personalBurnout: number
@@ -22,8 +16,10 @@ export const getCbiQuestionsFn = async (): Promise<ICbiQuestionResult> => {
 }
 
 
-export const submitCbiTest = async (submission: ITestSubmissionApi): Promise<ITestResultApi> => {
-  console.log('Submitting CBI test:', submission);
+export const submitCbiTestFn = async (submission: ITestSubmissionApi): Promise<ITestResultApi> => {
+  const response = await api.post<ITestResultApi>("questions/cbi/create", submission)
+  console.log(response.data);
+  
 
   return new Promise<ITestResultApi>((resolve, reject) => {
     setTimeout(() => {
@@ -38,32 +34,6 @@ export const submitCbiTest = async (submission: ITestSubmissionApi): Promise<ITe
       resolve(mockResult);
     }, 500);
 
-    /*try {
-      const response = await fetch('/api/cbi-test/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Incluir token de autenticación si es necesario
-          // 'Authorization': `Bearer ${getAuthToken()}`
-        },
-        body: JSON.stringify(submission)
-      })
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-  
-      const result: ApiResponse<TestResult> = await response.json()
-      
-      if (!result.success) {
-        throw new Error(result.message || 'Error al procesar el test')
-      }
-  
-      return result.data
-    } catch (error) {
-      console.error('Error submitting test:', error)
-      throw error
-    }*/
-  });
+    });
 };
 

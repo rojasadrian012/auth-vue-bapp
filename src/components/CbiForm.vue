@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { submitCbiTest, type ITestResultApi, type ITestSubmissionApi } from '@/api/question/questionApi';
+import { submitCbiTestFn, type ITestResultApi, type ITestSubmissionApi } from '@/api/question/questionApi';
 import { computed, ref } from 'vue';
 import type { Question } from './CbiForm.utils';
 
@@ -89,13 +89,9 @@ const submitTest = async () => {
             totalQuestions: questions.length
         }
 
-        const result: ITestResultApi = await submitCbiTest(submission)
+        const result: ITestResultApi = await submitCbiTestFn(submission)
 
-        // Handle successful submission
         console.log('Test enviado exitosamente:', result)
-
-        // You could navigate to results page or show results modal
-        // router.push({ name: 'TestResults', params: { result } })
 
     } catch (err) {
         console.error('Error al enviar el test:', err)

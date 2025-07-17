@@ -25,3 +25,9 @@ interface Option {
     label: string;
     labelEn: string;
 }
+
+export interface ITestSubmissionApi {
+    answers: Record<string, string>
+    completedAt: string
+    totalQuestions: number
+}
