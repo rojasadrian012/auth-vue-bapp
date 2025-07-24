@@ -17,7 +17,7 @@ const loadQuestions = async () => {
     error.value = null
     const response: ICbiQuestionResult = await getCbiQuestionsFn()
 
-    questions.value = response.data.questions.slice(0,3)
+    questions.value = response.data.questions
   } catch (err) {
     error.value = 'Error al cargar las preguntas. Por favor, intenta de nuevo.'
     console.error('Error loading questions:', err)
